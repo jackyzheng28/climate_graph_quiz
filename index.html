@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="An offline bilingual climate graph quiz with 25,000 practice cards from 5,000 cities worldwide.">
+  <title>Climate Graph Lab</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="cities.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <section id="setup" class="setup-screen">
+      <header class="setup-header">
+        <div class="brand"><strong>CLIMATE</strong> GRAPH LAB</div>
+        <div class="top-controls">
+          <button id="languageToggle" class="icon-button" type="button" aria-label="Switch language" title="Switch language">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg><span id="languageMark">EN</span>
+          </button>
+          <button id="themeToggle" class="icon-button" type="button" aria-label="Change color theme" title="Change color theme"><svg id="themeIcon" viewBox="0 0 24 24" aria-hidden="true"></svg></button>
+        </div>
+      </header>
+      <main class="setup-main">
+        <div class="eyebrow" data-i18n="eyebrow">WORLD CLIMATE PRACTICE</div>
+        <h1 data-i18n="headline">Read the rhythm of a place.</h1>
+        <p class="sub" data-i18n="intro">Study a monthly climate graph, identify its climate type, then match it to a city around the world.</p>
+        <section class="card setup-card" aria-label="Test setup">
+          <div class="setup-title"><div><h2 data-i18n="prepare">Set up your practice</h2><p class="small" data-i18n="setupHint">Choose a mode and session size, then start.</p></div><div class="bank-badge"><b>25,000</b><span data-i18n="cardBank">practice cards</span></div></div>
+          <div class="setup-fields">
+            <div><label for="mode" data-i18n="modeLabel">Question mode</label><select id="mode" class="select"><option value="random" data-i18n="random">Random practice</option><option value="ordered" data-i18n="ordered">Study in order</option><option value="review" data-i18n="reviewMode">Wrong answers only</option></select></div>
+            <div><label for="length" data-i18n="lengthLabel">Session length</label><select id="length" class="select"><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="all" data-i18n="fullBank">Full set (25,000)</option></select></div>
+          </div>
+          <p id="setupMessage" class="setup-message" aria-live="polite"></p>
+          <button class="btn start-button" id="restart" data-i18n="start">Start test</button>
+        </section>
+        <div class="setup-footnote"><span data-i18n="setupTip">Each question has two steps: climate type, then city.</span><span data-i18n="offline">Runs offline · no account needed</span></div>
+      </main>
+      <footer class="setup-footer"><span data-i18n="dataText">The 5,000 city names and coordinates come from the World Cities dataset, based on GeoNames. Climate classes and monthly graph values are teaching approximations.</span> <a href="https://github.com/joelacus/world-cities" target="_blank" rel="noreferrer">World Cities / GeoNames · CC BY 4.0</a></footer>
+    </section>
+
+    <section id="game" class="game-screen hidden">
+      <header class="game-header">
+        <div class="brand compact"><strong>CLIMATE</strong> GRAPH LAB</div>
+        <div class="game-status">
+          <div class="mini-stat"><b id="score">0</b><span data-i18n="correct">Correct</span></div>
+          <div class="mini-stat"><b id="done">0</b><span data-i18n="answered">Answered</span></div>
+          <div class="mini-stat"><b id="accuracy">—</b><span data-i18n="accuracy">Accuracy</span></div>
+          <div class="mini-stat bank-stat"><b id="bank">25,000</b><span data-i18n="questionCards">Question cards</span></div>
+        </div>
+        <div class="top-controls game-tools">
+          <button id="openReview" class="icon-button review-button" type="button" data-i18n="wrongReview">Wrong answers</button>
+          <button id="languageToggleGame" class="icon-button language-mirror" style="display:inline-flex" type="button" aria-label="Switch language" title="Switch language">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg><span class="languageMarkMirror">EN</span>
+          </button>
+          <button id="themeToggleGame" class="icon-button theme-mirror" style="display:inline-flex" type="button" aria-label="Change color theme" title="Change color theme"><svg class="themeIconMirror" viewBox="0 0 24 24" aria-hidden="true"></svg></button>
+          <button id="newSession" class="icon-button settings-button" type="button" data-i18n="changeSetup">Setup</button>
+        </div>
+      </header>
+      <main class="card quiz-card" id="main">
+        <div class="bar"><span class="step" id="step"></span><span class="round" id="round"></span></div>
+        <div class="progress"><i id="progress"></i></div>
+        <section id="quiz" class="quiz-content">
+          <div class="chartbox">
+            <p class="chart-title" data-i18n="chartTitle">Monthly climate profile</p>
+            <div class="chart-wrap"><div class="tip" id="tip"></div><svg id="chart" viewBox="0 0 760 330" role="img"></svg></div>
+            <div class="legend"><span class="key"><i class="swatch"></i><span data-i18n="precip">Precipitation (mm)</span></span><span class="key"><i class="swatch line"></i><span data-i18n="temp">Mean temperature (°C)</span></span></div>
+          </div>
+          <div class="answer-area">
+            <h2 class="question" id="prompt"></h2>
+            <div class="answers" id="answers"></div>
+            <div class="feedback" id="feedback" aria-live="polite"></div>
+            <div class="actions"><button class="btn secondary" id="skip"></button><button class="btn" id="next" disabled></button></div>
+          </div>
+        </section>
+        <section class="end hidden" id="end"></section>
+      </main>
+      <div class="game-footer" data-i18n="gameFooter">Question graph values are illustrative teaching approximations.</div>
+      <section id="reviewOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="reviewTitle">
+        <div class="review-dialog"><div class="review-head"><h2 id="reviewTitle" data-i18n="wrongReview">Wrong-answer review</h2><button id="closeReview" class="icon-button close-button" type="button" aria-label="Close">×</button></div><div class="review-list" id="review"></div></div>
+      </section>
+    </section>
+  </div>
+</body>
+</html>
