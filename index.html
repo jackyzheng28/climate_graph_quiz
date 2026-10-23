@@ -7,6 +7,7 @@
   <title>Climate Graph Lab</title>
   <link rel="stylesheet" href="styles.css">
   <script src="cities.js" defer></script>
+  <script src="quiz-core.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -27,8 +28,11 @@
         <p class="sub" data-i18n="intro">Study a monthly climate graph, identify its climate type, then match it to a city around the world.</p>
         <section class="card setup-card" aria-label="Test setup">
           <div class="setup-title"><div><h2 data-i18n="prepare">Set up your practice</h2><p class="small" data-i18n="setupHint">Choose a mode and session size, then start.</p></div><div class="bank-badge"><b>25,000</b><span data-i18n="cardBank">practice cards</span></div></div>
-          <div class="setup-fields">
-            <div><label for="mode" data-i18n="modeLabel">Question mode</label><select id="mode" class="select"><option value="random" data-i18n="random">Random practice</option><option value="ordered" data-i18n="ordered">Study in order</option><option value="review" data-i18n="reviewMode">Wrong answers only</option></select></div>
+          <div class="setup-fields mode-fields">
+            <div><label for="learningMode" data-i18n="learningMode">Mode</label><select id="learningMode" class="select"><option value="easy" data-i18n="easyMode">Easy</option><option value="medium" data-i18n="mediumMode">Medium</option><option value="hard" data-i18n="hardMode">Hard</option><option value="custom" data-i18n="customMode">Custom</option></select></div>
+            <div id="customTaxonomyField" class="hidden"><label for="customTaxonomy" data-i18n="classification">Classification</label><select id="customTaxonomy" class="select"><option value="easy" data-i18n="easyTaxonomy">Easy</option><option value="medium" data-i18n="mediumTaxonomy">Medium</option><option value="hard" data-i18n="hardTaxonomy">Hard</option></select></div>
+            <div id="answerFormatField" class="hidden"><label for="answerFormat" data-i18n="answerFormat">Answer format</label><select id="answerFormat" class="select"><option value="climate" data-i18n="climateOnly">Climate only</option><option value="city" data-i18n="climateCity">Climate + city</option></select></div>
+            <div><label for="mode" data-i18n="practiceMode">Practice mode</label><select id="mode" class="select"><option value="random" data-i18n="random">Random practice</option><option value="review" data-i18n="reviewMode">Wrong answers only</option></select></div>
             <div><label for="length" data-i18n="lengthLabel">Session length</label><select id="length" class="select"><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="all" data-i18n="fullBank">Full set (25,000)</option></select></div>
           </div>
           <p id="setupMessage" class="setup-message" aria-live="polite"></p>
